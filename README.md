@@ -67,8 +67,11 @@ First, you need to create an object from the SGT class. For this walkthrough, I 
 
     SGT la_teams;
 
+In the terminal use run/compile code defined above.
+
 This object represents your Segment Tree and allows you to call its methods for building, querying, and updating the tree.
 (There will be no output for this line of code)
+Click here to see what your main should look like: ![SGT la_teams](images/la_teams.png)
 
 # Building the Segment Tree
 To build a Segment Tree from the predefined data in the main.cpp file, place the following code inside main.cpp in the designated area:
