@@ -1,30 +1,41 @@
 # Segment Tree
 
 # Summary
-A Segment Tree is a binary tree data structure that allows fast range queries and updates on an array. Each node represents a segment of the array and stores aggregate information about that segment, such as a sum, minimum, or in this project, the top-performing team in a range of matches. Both queries and updates run in O(log n) time, making it well-suited for dynamic datasets where read and write operations are both frequent.
+The goal of this project was to implement a Segment Tree that tracks the best team across a range of matches, updating dynamically as results change which is a common need in live eSports or sports tracking applications.
 
+Instead of focusing on raw performance optimizations, I prioritized clarity, simplicity, and correctness, especially for educational and development purposes:
+- Rebuilding the tree after updates guarantees consistency without introducing complex logic.
+- Alphabetical tie-breaking keeps comparisons straightforward when multiple teams have the same number of wins.
+- Exact name matching avoids the need for fuzzy logic and keeps team identification unambiguous.
+
+I implemented the Segment Tree using a vector-based recursive structure, where each node stores:
+- A count of wins per team in its range.
+- The team with the most wins in that range.
+- Tie resolution logic that ensures consistent behavior.
+
+While this approach might use more memory and require rebuilding more often than strictly necessary, it results in clean, bug-free behavior and makes the logic easier to
+follow which was ideal for building a working version of the Segment Tree and focusing on learning how it functions.
 
 # Full Explaination
-For this project, I implemented a node-based Segment Tree data structure in C++. A Segment Tree is conceptually similar to a Binary Search Tree from the CPBS 2270 course, but instead of ordering nodes by key values, it partitions index ranges. It stores information about intervals of a given array and is built using a divide-and-conquer approach where the index range is repeatedly split in half until each node represents a single index. For example, given an array a[0 ... n-1], it is split into [0 ... mid] and [mid+1 ... n-1] until each segment covers exactly one index. Each internal node stores aggregate information about its range, which could be a sum, maximum, minimum, or in this case, the “best team” in that range based on match results.
+For this project, I implemented a node-based Segment Tree data structure in C++. Conceptually, a Segment Tree resembles a Binary Search Tree (as studied in CPBS 2270), but instead of organizing nodes by key values, it partitions index ranges. It stores aggregated information about intervals of an array, and is constructed using a divide-and-conquer strategy: the index range is repeatedly split in half until each node corresponds to a single element. For instance, an array a[0 ... n-1] is split into [0 ... mid] and [mid+1 ... n-1] segments, recursively, until segments cover exactly one index. Each internal node then stores aggregate data for its range—such as a sum, minimum, maximum, or in this case, the “best team” based on match results within that segment.
 
-This implementation applies the Segment Tree concept to an eSports-style example for tracking the top-performing team over a range of matches. Three main vectors store the data: teams for team names, wins for total wins per team across all matches, and winnerIdx for the index of the team that won each match. Each node of the tree stores:
+This implementation applies the Segment Tree concept to an eSports-style example, tracking the top-performing team over a range of matches. The data is stored in three main vectors. The vectors are teams for team names, wins for total wins per team across all matches, and winnerIdx for the index of the team that won each match. Each node of the tree stores:
 
-counts: a vector sized to exactly teams.size() that records how many wins each team has in that node’s range.
-bestCount and bestTeamIdx: precomputed values for the top-performing team in that range, so queries don’t need to re-scan counts from scratch. When two teams have the same number of wins in a range, the tie is broken alphabetically by team name, but only if both teams have at least one win in that range.
+counts: A vector sized exactly to teams.size() that records how many wins each team has within that node’s range.
 
-The build() method constructs the tree from the given teams list and winnerIdx match history. Each node covers a match index range [start, end], with the left child covering [start, mid] and the right child covering [mid+1, end]. At a leaf node, where start == end, there is exactly one match, and the node’s counts vector marks one win for that match’s winner. Internal nodes combine their children’s counts by summing per-team wins, then choose the best team for that range by comparing bestCount values and applying the tie-break rule. This ensures that every node always has a consistent “best team” view for its range.
+bestCount and bestTeamIdx: Precomputed values representing the number of wins and index of the top-performing team in that range, so queries can return results without rescanning the entire counts vector. In cases where two teams have the same number of wins, the tie is broken alphabetically by team name—but only if both teams have at least one win within that range.
+
+The build() method constructs the tree using the provided teams list and winnerIdx match history. Each node represents a range of match indices [start, end], with the left child covering [start, mid] and the right child covering [mid+1, end]. At a leaf node, where start == end, the node corresponds to a single match, and its counts vector records one win for the winner of that match. Internal nodes aggregate their children’s data by summing the per-team wins, then determine the best team in that range by comparing bestCount values and applying the alphabetical tie-break rule. This approach ensures every node maintains a consistent view of the “best team” for its segment of matches.
 
 The data structure can be updated through several methods:
 
-- addMatchByName(): Logs a new match winner in both winnerIdx and wins, then rebuilds the tree so queries see the new data.
-- addTeam(): Appends a new team with an initial win total, then rebuilds the tree so all nodes’ counts vectors resize to the updated -teams.size().
-- removeTeam(): Removes a team from teams and wins, iterates through winnerIdx to mark any matches won by that team as -1, decrements indices for teams above the removed team, and rebuilds the tree.
+addMatchByName(): Logs a new match winner in both winnerIdx and wins, then rebuilds the tree so queries reflect the updated data.
+addTeam(): Appends a new team with an initial win total, then rebuilds the tree so all nodes’ counts vectors resize to match the updated teams.size().
+removeTeam(): Removes a team from teams and wins, iterates through winnerIdx to mark any matches won by that team as -1, decrements indices for teams above the removed team, and rebuilds the tree.
 
-After any operation that changes the number of teams or alters match history (addTeam, removeTeam, addMatchByName), the tree is rebuilt to ensure every node’s counts vector matches the current teams size and that all bestTeamIdx and bestCount values are accurate. This guarantees consistent query results, correct tie-breaking, and proper handling of changes over time.
+After any operation that changes the number of teams or alters match history (addTeam, removeTeam, addMatchByName), the tree is rebuilt to ensure every node’s counts vector matches the current team count, and all bestTeamIdx and bestCount values remain accurate. This guarantees consistent query results, correct tie-breaking, and proper handling of changes over time.
 
-By the end, the Segment Tree supports building from match history, querying the best team over any match index range, and updating as teams and matches change while preserving the integrity of node data and maintaining efficient, predictable query behavior..
-
-
+By the end, the Segment Tree supports building from match history, querying the best team over any match index range, and updating as teams and matches change — all while preserving node data integrity and maintaining efficient, predictable query behavior.
 
 # Code Walkthrough
 
