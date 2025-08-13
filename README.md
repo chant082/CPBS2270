@@ -63,16 +63,19 @@ To compile the project using C++17 and run the program with your implementations
     g++ -std=c++17 -O2 -o segment_tree main.cpp Segment_Tree.cpp && ./segment_tree
 
 # Creating an object from the Segment Tree class
-First, you need to create an object from the SGT class. You can name it whatever you like. Here’s an example
+First, you need to create an object from the SGT class. For this walkthrough, I am calling the object "la_teams". To create this paste the following code into your main.cpp
 
     SGT la_teams;
 
+This object represents your Segment Tree and allows you to call its methods for building, querying, and updating the tree.
+(There will be no output for this line of code)
+
 # Building the Segment Tree
-To build a Segment Tree from the predefined data, place the following code inside main in the designated area:
+To build a Segment Tree from the predefined data in the main.cpp file, place the following code inside main.cpp in the designated area:
 
     la_teams.build(EsportsTeams, winnerIdx);
 
-This object represents your Segment Tree and allows you to call its methods for building, querying, and updating the tree.
+(There will be no output for this line of code)
 Congratulations — you’ve built a tree! Although it isn’t visually displayed in the console, it exists internally. Here’s what the tree looks like under the hood:
 
                                                          [0,11]: Team Beta (4)
@@ -92,7 +95,8 @@ To find the root node of the Segment Tree (the team with the highest number of w
 
     cout << "Best team overall: " << la_teams.leader() << endl;
 
-The code output should be "Best team overall: Team Beta"
+output: 
+    "Best team overall: Team Beta"
 
 
 # Query
@@ -153,6 +157,7 @@ cout << "Best team: " << Best2_4.team << endl;
     cout << "Best team: " << _____.team << " (" << ____.winsInRange << " wins in range, " << ____.totalWinsOverall << " total wins overall)" << endl;
 
 **ANSWER**
+
 RangeBest Best9_4 = la_teams.queryMatchRange(9, 4); - OR - RangeBest Best4_9 = la_teams.queryMatchRange(9, 4);
 
 (The code will automatically switch the positions of the values if the first value is higher!)
@@ -194,14 +199,14 @@ After running the code above, a message will confirm that the team was successfu
 
 Example output after removing Team Alpha:
 
-    output:
+output:
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix 
     Wins:  4 1 1 3 1 
     Idx:   0 3 0 1 4 3 0 2 3 0
 
 Example output after adding Team Zeta:
 
-    output:
+output:
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 0 
     Idx:   0 3 0 1 4 3 0 2 3 0 
@@ -214,7 +219,7 @@ Run the following code:
     la_teams.addMatchByName("Team Zeta");
     la_teams.printState();
 
-    output:
+output:
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 1 
     Idx:   0 3 0 1 4 3 0 2 3 0 5 
@@ -229,7 +234,7 @@ What if Zeta wins multiple times? We can simply run the addMatchByName() functio
     la_teams.addMatchByName("Team Zeta");
     la_teams.printState();
 
-    output:
+output:
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 7 
     Idx:   0 3 0 1 4 3 0 2 3 0 5 5 5 5 5 5 5 
@@ -237,15 +242,15 @@ What if Zeta wins multiple times? We can simply run the addMatchByName() functio
 The addMatchByName() function automatically rebuilds the Segment Tree, so we can query it right away.
 
 If we want to see which team won the most games between match 11 and match 17, we can use the following code:
-RangeBest Best11_17 = la_teams.queryMatchRange(11, 17);
 
+    RangeBest Best11_17 = la_teams.queryMatchRange(11, 17);
     cout << "Best team: " << Best11_17.team << " (" << Best11_17.winsInRange << " wins in range, " << Best11_17.totalWinsOverall << " total wins overall)" << endl;
 
-    output:
+output:
     Best team: Team Zeta (6 wins in range, 7 total wins overall)
     
     
-#Limitations
+# Limitations
 - Exact names only. addMatchByName("Team Beta") must match exactly — capitalization and spacing matter. No fuzzy matching.
 - Tie rules are simple (and a bit strict). If two teams have the same number of wins in a range, the one that comes first alphabetically is chosen. That’s easy to understand, but maybe not the rule you’d want in real life.
 - Rebuilds the whole tree after changes. When you add/remove a team or add a new match, the code “re-makes” the tree from scratch. That keeps things simple and safe, but it’s slower than updating only the affected part.
@@ -255,7 +260,7 @@ RangeBest Best11_17 = la_teams.queryMatchRange(11, 17);
 Most of these limitations came from my focus on getting a working solution first rather than building a fully optimized system. For example, rebuilding the whole tree after every change was the simplest way to guarantee correctness without introducing tricky bugs. I also kept tie rules simple so I could focus on the Segment Tree logic instead of getting lost in edge cases. The exact name matching was just the quickest way to connect match results to teams without needing extra parsing or search logic. In a real-world scenario, I’d revisit each of these to improve speed, memory use, and flexibility.
 
 
-#Sources
+# Sources
 
 https://www.geeksforgeeks.org/cpp/vector-in-cpp-stl/
 https://www.geeksforgeeks.org/cpp/structures-in-cpp/
