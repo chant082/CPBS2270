@@ -73,7 +73,7 @@ This object represents your Segment Tree and allows you to call its methods for 
 (There will be no output for this line of code)
 
 
-What your main should look like: ![SGT la_teams](CPBS2270/la_teams.png)
+What your main should look like: ![SGT la_teams](la_teams.png)
 
 # Building the Segment Tree
 To build a Segment Tree from the predefined data in the main.cpp file, place the following code inside main.cpp in the designated area:
