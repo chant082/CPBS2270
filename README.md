@@ -58,7 +58,7 @@ Open Segment_Tree.cpp, the implementation file for the SGT class declared in Seg
 Lastly, open main.cpp, which serves as the program’s entry point and contains the code walkthrough for demonstrating the Segment Tree. This file sets up predefined match data, builds the tree, runs example queries, performs updates, and prints the results before and after changes. It provides a clear example of how the SGT class is used in practice.
 
 # Running / Compiling 
-To compile the project using C++17 and run the program with your implementations, use the following command in your terminal. In the explanation below, the phrase “run/compile code” refers to entering this command:
+To compile the project using C++17 and run the program with your implementations, use the following command in **your terminal**. In the explanation below, the phrase “run/compile code” refers to entering this command:
 
     g++ -std=c++17 -O2 -o segment_tree main.cpp Segment_Tree.cpp && ./segment_tree
 
@@ -73,15 +73,20 @@ This object represents your Segment Tree and allows you to call its methods for 
 (There will be no output for this line of code)
 
 
-What your main should look like: ![SGT la_teams](la_teams.png)
+What your main.cpp should look like:
+![SGT la_teams](la_teams.png)
 
 # Building the Segment Tree
-To build a Segment Tree from the predefined data in the main.cpp file, place the following code inside main.cpp in the designated area:
+To build a Segment Tree from the predefined data in the main.cpp file, place the following code inside main.cpp in the designated area below your existing code:
 
     la_teams.build(EsportsTeams, winnerIdx);
 
-(There will be no output for this line of code)
-Congratulations — you’ve built a tree! Although it isn’t visually displayed in the console, it exists internally. Here’s what the tree looks like under the hood:
+What your main.cpp should look like:
+![la_teams.build](build.png)
+
+In the terminal use run/compile code defined above. (There will be no output for this line of code)
+
+Congratulations — you’ve built a tree! Although it is not visually displayed in the console, it exists internally. Here’s what the tree looks like under the hood:
 
                                                          [0,11]: Team Beta (4)
                                                    /                               \
@@ -95,12 +100,17 @@ Congratulations — you’ve built a tree! Although it isn’t visually displaye
  
 (Note: Some details have been omitted for simplicity. The brackets [ ] indicate the index range of the matches. The team name (e.g., Team Beta) represents the team with the most wins in that range, and the number in parentheses ( ) shows how many wins that team has within the range.)
 
-# Find Maximum Value by Matches
-To find the root node of the Segment Tree (the team with the highest number of wins across all matches), use the following function:
+# Find Maximum Value of All Matches of Current Tree
+To find the root node of the Segment Tree (the team with the highest number of wins across all matches), we will use the leader() function. Place the following code in your main.cpp below your other code that you have added:
 
     cout << "Best team overall: " << la_teams.leader() << endl;
 
-output: 
+What your main.cpp should look like:
+![leader](leader.png)
+
+In the terminal use run/compile code defined above.
+
+In the terminal the output should be: 
     "Best team overall: Team Beta"
 
 
