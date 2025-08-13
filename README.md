@@ -44,11 +44,11 @@ First, open VS Code or another coding environment of your choice that can run C+
 
 To copy the project data, go to the GitHub repository and open the Code section. Copy the link found under the SSH option.
 
-    Example: https://github.com/username/segment-tree.git
+    Example: git@github.com:chant082/CPBS2270.git
 
 Open a new terminal and type in git clone and paste the link into the terminal then 
 
-    Example: git clone https://github.com/username/segment-tree.git
+    Example: git clone git@github.com:chant082/CPBS2270.git
     
 # Opening the files     
 Open Segment_Tree.h, the header file that contains the declaration of the SGT class. This file defines the public methods for building, querying, and updating the Segment Tree, as well as the private data members used for tracking team win counts, determining the best team in a given range, and running helper functions for internal operations. It serves as the interface for the Segment Tree, while the corresponding .cpp file contains the actual implementations.
