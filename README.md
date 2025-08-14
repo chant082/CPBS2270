@@ -62,6 +62,9 @@ To compile the project using C++17 and run the program with your implementations
 
     g++ -std=c++17 -O2 -o segment_tree main.cpp Segment_Tree.cpp && ./segment_tree
 
+Example of the run and compile code in the terminal:
+![run&compile](run&comiple.png)
+
 # Creating an object from the Segment Tree class
 First, you need to create an object from the SGT class. For this walkthrough, I am calling the object "la_teams". To create this paste the following code into your main.cpp
 
@@ -69,8 +72,7 @@ First, you need to create an object from the SGT class. For this walkthrough, I 
 
 In the terminal use run/compile code defined above.
 
-This object represents your Segment Tree and allows you to call its methods for building, querying, and updating the tree.
-(There will be no output for this line of code)
+This object represents your Segment Tree and allows you to call its methods for building, querying, and updating the tree. (There will be no output for this line of code)
 
 
 What your main.cpp should look like:
@@ -100,7 +102,7 @@ Congratulations — you’ve built a tree! Although it is not visually displayed
  
 (Note: Some details have been omitted for simplicity. The brackets [ ] indicate the index range of the matches. The team name (e.g., Team Beta) represents the team with the most wins in that range, and the number in parentheses ( ) shows how many wins that team has within the range.)
 
-# Find Maximum Value of All Matches of Current Tree
+# Find Maximum Value of the Tree
 To find the root node of the Segment Tree (the team with the highest number of wins across all matches), we will use the leader() function. Place the following code in your main.cpp below your other code that you have added:
 
     cout << "Best team overall: " << la_teams.leader() << endl;
@@ -111,56 +113,61 @@ What your main.cpp should look like:
 In the terminal use run/compile code defined above.
 
 In the terminal the output should be: 
-    "Best team overall: Team Beta"
+    Best team overall: Team Beta
 
 
 # Query
-To find which team had the highest number of wins for a given range of matches (e.g., between match 3 and match 7), use this function. It can be applied to any range of matches. We can verify that our leader() function works with the following code:
+To search for which team had the highest number of wins for a given range of matches, we will use the queryMatchRange() function. This function searches from a internval of matches that you are interested in and find the the team name with the highest amount of wins in that given range and how many wins that team has overall (in the entire data). We can use this function to verify that our leader() function works by pasting the code below into our main.cpp (without the comments):
 
-    la_teams.queryMatchRange(0, int(winnerIdx.size()) - 1);
+    la_teams.queryMatchRange(1, int(winnerIdx.size())); //Searching from match 1 to the maximum number of matches.
 
+To extract the data points from query, we make a struct from the RangeBest object. in this example I have called it result.
 
-    RangeBest result = la_teams.queryMatchRange(0, winnerIdx.size() - 1);
+    RangeBest result = la_teams.queryMatchRange(1, winnerIdx.size()); //This line creates a RangeBest object named result by calling the queryMatchRange function on the la_teams node. The function is given a range 
+                                                                          //from index 0 to winnerIdx.size() - 1
 
-    cout << "Best team: " << result.team << " (" << result.winsInRange << " wins in range, " << result.totalWinsOverall << " total wins overall)" << endl;
-     
-     
-The reason it works this way is due to how we constructed the query function. The function creates a RangeBest structure called result. This struct has three components:
-
+The RangeBest struct has 3 data points in it.
 RangeBest
 - team
 - winsInRange
 - totalWinsOverall
 
-To access the values within the result object we created earlier, use this format:
+To access the individual sections we use must call the result.team, result.winsInRange, and/or result.totalWinsOverall to obtain the information. Copy the code below to access each data point in the specific formnat.
+    
+    cout << "Best team: " << result.team << " (" << result.winsInRange << " wins in range, " << result.totalWinsOverall << " total wins overall)" << endl; //print statement for each component of the RangeBest struct
 
-    ____.team, _____winsInRange, _____.totalWinsOverall
-
-Here’s the general format for running more queries:
-
-RangeBest _____ = la_teams.queryMatchRange(____, ____);
-
-    cout << "Best team: " << _____.team << " (" << ____.winsInRange << " wins in range, " << ____.totalWinsOverall << " total wins overall)" << endl;
-
-The code output should be:
-
-    "Best team overall: Team Beta"
+What your main.cpp should look like:
+![query_all](query_all.png)
 
 
+In the terminal use run/compile code defined above.
 
-Now it’s your turn! I’ll give you sample questions to query for, and I’ll place the correct code below each one so you can check your work.
+In the terminal the output should be:
+    Best team overall: Team Beta
+    Best team: Team Beta (4 wins in range, 4 total wins overall)
+    
+(**OPTIONAL** If you only wanted to access the specific part of the results such as just the team, how many wins in that range, or how many wins they have in total we can use the following codes) 
 
-1.How would you find which team had the most wins between matches 2 and 4?
+    cout << result.team << endl;
+    
+    cout << result.winsInRange << endl;
+    
+    cout << result.totalWinsOverall << endl;
+    
 
-    RangeBest _____ = la_teams.queryMatchRange(____, ____);
 
-    cout << "Best team: " << _____.team << " (" << ____.winsInRange << " wins in range, " << ____.totalWinsOverall << " total wins overall)" << endl;
+**Example 1** If I want to look best team and their statistics at match 1 to 5, I would put the following code into my main.cpp
+
+
+    RangeBest best1_5 = la_teams.queryMatchRange(1,5);
+    cout << "Best team: " << best1_5.team << " (" << best1_5.winsInRange << " wins in range, " << best1_5.totalWinsOverall << " total wins overall)" << endl;
 
 
 
 **ANSWER**
+Paste this 
 
-RangeBest Best2_4 = la_teams.queryMatchRange(2, 4);
+RangeBest Best2_4 = la_teams.queryMatchRange(1, 3);
 
 cout << "Best team: " << Best2_4.team << endl;
 
