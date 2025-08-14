@@ -248,6 +248,7 @@ Run the following code:
     la_teams.printState();
 
 What your main.cpp should look like:
+
 ![win_zeta](win_zeta.png)
 
 In the terminal use run/compile code defined above.
@@ -273,11 +274,13 @@ What if Zeta wins multiple times? We can simply run the addMatchByName() functio
     la_teams.printState();
 
 What your main.cpp should look like:
+
 ![win_zeta7](win_zeta7.png)
 
 In the terminal use run/compile code defined above.
     
 In the terminal the output should be:
+
     Removed team: Team Alpha
     Added team: Team Zeta
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
@@ -297,6 +300,7 @@ What your main.cpp should look like:
 In the terminal use run/compile code defined above.
     
 In the terminal the output should be:
+
     Removed team: Team Alpha
     Added team: Team Zeta
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
