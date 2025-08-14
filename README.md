@@ -121,10 +121,12 @@ To search for which team had the highest number of wins for a given range of mat
 
     la_teams.queryMatchRange(1, int(winnerIdx.size())); //Searching from match 1 to the maximum number of matches.
 
-To extract the data points from query, we make a struct from the RangeBest object. in this example I have called it result.
+(**Note** if we were to run/compile this code, there would be no output)
 
-    RangeBest result = la_teams.queryMatchRange(1, winnerIdx.size()); //This line creates a RangeBest object named result by calling the queryMatchRange function on the la_teams node. The function is given a range 
-                                                                          //from index 0 to winnerIdx.size() - 1
+To extract the data points from query and see it visually, create a object from the RangeBest struct. In this example I have called it result.
+
+    RangeBest result = la_teams.queryMatchRange(1, winnerIdx.size());   //This line creates a RangeBest object named result by calling the queryMatchRange function on the 
+                                                                        //la_teams node.
 
 The RangeBest struct has 3 data points in it.
 RangeBest
@@ -162,93 +164,107 @@ In the terminal the output should be:
     RangeBest best1_5 = la_teams.queryMatchRange(1,5);
     cout << "Best team: " << best1_5.team << " (" << best1_5.winsInRange << " wins in range, " << best1_5.totalWinsOverall << " total wins overall)" << endl;
 
+What your main.cpp should look like:
+![best1_5](best1_5.png)
 
+In the terminal use run/compile code defined above.
 
-**ANSWER**
-Paste this 
+In the terminal the output should be:
+    Best team: Team Beta (2 wins in range, 4 total wins overall)
 
-RangeBest Best2_4 = la_teams.queryMatchRange(1, 3);
+**Example 2** If I want to look best team and their statistics at match 9 to 4, I would put the following code into my main.cpp
+**(The function will automatically switch the positions of the values if the first value is higher!)**
 
-cout << "Best team: " << Best2_4.team << endl;
+    RangeBest best9_4 = la_teams.queryMatchRange(9, 4); - OR - RangeBest best9_4 = la_teams.queryMatchRange(4, 9);
+    cout << "Best team: " << best9_4.team << " (" << best9_4.winsInRange << " wins in range, " << best9_4.totalWinsOverall << " total wins overall)" << endl;
 
+What your main.cpp should look like:
+![best9_4](best9_4.png)
 
-2.How would you find which team had the most wins between matches 9 and 4?
+In the terminal use run/compile code defined above.
 
-    RangeBest _____ = la_teams.queryMatchRange(____, ____);
+In the terminal the output should be:
+    Best team: Team Beta (2 wins in range, 4 total wins overall)
 
-    cout << "Best team: " << _____.team << " (" << ____.winsInRange << " wins in range, " << ____.totalWinsOverall << " total wins overall)" << endl;
-
-**ANSWER**
-
-RangeBest Best9_4 = la_teams.queryMatchRange(9, 4); - OR - RangeBest Best4_9 = la_teams.queryMatchRange(9, 4);
-
-(The code will automatically switch the positions of the values if the first value is higher!)
-
-cout << "Best team: " << Best9_4.team << endl;
-cout << "Best team: " << Best4_9.team << endl;
-
+**Sanity Check**
 As you can see, it’s the same answer!
-
+                                      |              |    
     vector<int> winnerIdx = {1, 4, 0, 1, 2, 5, 4, 1, 3, 0, 4, 1};
-    
-You might be wondering — if matches 4 through 9 each team has 1 win, why did it choose Alpha when they’re all equal? As discussed in the explanation above, the code breaks ties alphabetically if the win counts are the same.
+
+1 correspesonds to Team Beta and Team Beta appears the most inbetween the brackets.
 
 # Remove a Team / Add a Team
-What if a team gets disqualified and is no longer part of the game? We can use the removeTeam() function.
-What if a team joins late after finishing their paperwork? We can use the addTeam() function. 
-
-Running these functions will remove or add the team to the EsportsTeam vector and rebuild the Segment Tree, allowing you to query updated results.
+What if a team joins late after finishing their paperwork? We can use the addTeam() function. Code to remove Team Alpha:
 
     la_teams.removeTeam("Team Alpha");
 
-This will display a message confirming that the team was successfully removed.
+What your main.cpp should look like:
+![remove_alpha](remove_alpha.png)
+
+In the terminal use run/compile code defined above.
+This will display a message confirming that the team was successfully removed. In the terminal the output should be:
 
     Removed team: Team Alpha
 
-An example for adding a Team:
+What if a team gets disqualified and is no longer part of the game? We can use the removeTeam() function. Code to add Team Zeta
 
     la_teams.addTeam("Team Zeta", 0);
     
-Here, 0 is added because they joined the league and currently have no wins. 
+**Note** 0 is added because they joined the league and currently have no wins. 
 
-After running the code above, a message will confirm that the team was successfully added:
+What your main.cpp should look like:
+![add_zeta](add_zeta.png)
 
+In the terminal use run/compile code defined above.
+This will display a message confirming that the team was successfully added. In the terminal the output should be:
+
+    Removed team: Team Alpha
     Added team: Team Zeta
        
 **To see the current state of the vectors, run the following code:**
+To look up the current team roster we can use the printState() function. Place this code in your main.cpp file.
 
     la_teams.printState();
 
-Example output after removing Team Alpha:
+What your main.cpp should look like:
+![new_roster](new_roster.png)
 
-output:
-    Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix 
-    Wins:  4 1 1 3 1 
-    Idx:   0 3 0 1 4 3 0 2 3 0
-
-Example output after adding Team Zeta:
-
-output:
+In the terminal use run/compile code defined above.
+The roster has successfully removed Team Alpha and added Team Zeta. In the terminal the output should be:
+    
+    Removed team: Team Alpha
+    Added team: Team Zeta
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 0 
     Idx:   0 3 0 1 4 3 0 2 3 0 
 
+
 # Add a win
-Your team just won a game! Now we can record that win in the Idx vector using their index. For example, if we use the state above with Team Zeta at index 5, running the following code and then using the printState() function will show that they won a game — their wins increase from 0 to 1.
+Your team just won a game! Now we can record that win in the Idx vector using their index. For example, if we use the state above with Team Zeta at index 5. First delete the printState() function code and place the code below there. Running the code will increment Team Zeta Wins from 0 to 1 and place their index from the Teams vector into the Idx vector showing who won that match.
 
 Run the following code:
 
     la_teams.addMatchByName("Team Zeta");
     la_teams.printState();
 
-output:
+What your main.cpp should look like:
+![win_zeta](win_zeta.png)
+
+In the terminal use run/compile code defined above.
+    
+In the terminal the output should be:
+    
+    Removed team: Team Alpha
+    Added team: Team Zeta
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 1 
     Idx:   0 3 0 1 4 3 0 2 3 0 5 
 
 
-What if Zeta wins multiple times? We can simply run the addMatchByName() function repeatedly to keep increasing their wins.
-
+What if Zeta wins multiple times? We can simply run the addMatchByName() function repeatedly to keep increasing their wins. (Make sure there are 7 total)
+    
+    la_teams.addMatchByName("Team Zeta");
+    la_teams.addMatchByName("Team Zeta");
     la_teams.addMatchByName("Team Zeta");
     la_teams.addMatchByName("Team Zeta");
     la_teams.addMatchByName("Team Zeta");
@@ -256,23 +272,41 @@ What if Zeta wins multiple times? We can simply run the addMatchByName() functio
     la_teams.addMatchByName("Team Zeta");
     la_teams.printState();
 
-output:
+What your main.cpp should look like:
+![win_zeta7](win_zeta7.png)
+
+In the terminal use run/compile code defined above.
+    
+In the terminal the output should be:
+    Removed team: Team Alpha
+    Added team: Team Zeta
     Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
     Wins:  4 1 1 3 1 7 
     Idx:   0 3 0 1 4 3 0 2 3 0 5 5 5 5 5 5 5 
 
-The addMatchByName() function automatically rebuilds the Segment Tree, so we can query it right away.
+**Note** The addMatchByName() function also automatically rebuilds the Segment Tree, so we can query it right away.
 
-If we want to see which team won the most games between match 11 and match 17, we can use the following code:
+If we want to see which team won the most games between match 10 and match 16, we can use the following code below your current code:
 
-    RangeBest Best11_17 = la_teams.queryMatchRange(11, 17);
-    cout << "Best team: " << Best11_17.team << " (" << Best11_17.winsInRange << " wins in range, " << Best11_17.totalWinsOverall << " total wins overall)" << endl;
+    RangeBest best10_16 = la_teams.queryMatchRange(10, 16);
+    cout << "Best team: " << best10_16.team << " (" << best10_16.winsInRange << " wins in range, " << best10_16.totalWinsOverall << " total wins overall)" << endl;
 
-output:
-    Best team: Team Zeta (6 wins in range, 7 total wins overall)
+What your main.cpp should look like:
+![best10_16](best10_16.png)
+
+In the terminal use run/compile code defined above.
     
+In the terminal the output should be:
+    Removed team: Team Alpha
+    Added team: Team Zeta
+    Teams: Team Beta Team Gamma Team Delta Team Omega Team Phoenix Team Zeta 
+    Wins:  4 1 1 3 1 7 
+    Idx:   0 3 0 1 4 3 0 2 3 0 5 5 5 5 5 5 5 
+
+Best team: Team Zeta (6 wins in range, 7 total wins overall)
     
 # Limitations
+
 - Exact names only. addMatchByName("Team Beta") must match exactly — capitalization and spacing matter. No fuzzy matching.
 - Tie rules are simple (and a bit strict). If two teams have the same number of wins in a range, the one that comes first alphabetically is chosen. That’s easy to understand, but maybe not the rule you’d want in real life.
 - Rebuilds the whole tree after changes. When you add/remove a team or add a new match, the code “re-makes” the tree from scratch. That keeps things simple and safe, but it’s slower than updating only the affected part.
