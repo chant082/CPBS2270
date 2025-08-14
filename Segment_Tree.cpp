@@ -133,19 +133,21 @@ const std::string& SGT::leader() const {
 }
 
 RangeBest SGT::queryMatchRange(int L, int R) {
+    // Adjust from 1-based to 0-based indexing
+    L -= 1;
+    R -= 1;
+
     RangeBest result = {"", 0, 0};
     if (!root || winnerIdx.empty() || teams.empty()) return result;
 
     int n = (int)winnerIdx.size();
+    
+    // Clamp indices to valid range
     if (L < 0) L = 0;
     if (R < 0) R = 0;
     if (L >= n) L = n - 1;
     if (R >= n) R = n - 1;
-    if (L > R) {
-        int temp = L;
-        L = R;
-        R = temp;
-    }
+    if (L > R) std::swap(L, R);
 
     vector<int> counts((int)teams.size(), 0);
     queryRecHelper(root, L, R, counts);
@@ -187,32 +189,55 @@ void SGT::queryRecHelper(SGTNode* node, int L, int R, vector<int>& outCounts) {
 }
     
 void SGT::removeTeam(std::string name) {
+    // Step 1: Find the index of the team to remove
     int idx = -1;
     for (int i = 0; i < (int)teams.size(); i++) {
-        if (teams[i] == name) { idx = i; break; }
+        if (teams[i] == name) {
+            idx = i;
+            break;
+        }
     }
-    if (idx < 0 || idx >= (int)teams.size()) {
+
+    // If team not found, print message and stop
+    if (idx == -1) {
         cout << "Team not found: " << name << "\n";
         return;
     }
 
-    for (int m = 0; m < (int)winnerIdx.size(); m++) {
-        if (winnerIdx[m] == idx)      winnerIdx[m] = -1;
-        else if (winnerIdx[m] > idx)  winnerIdx[m]--;
+    // Step 2: Mark all matches won by this team with -1 (means removed)
+    // Also, if other teams have indices bigger than this, subtract 1 because one team will be removed
+    for (int i = 0; i < (int)winnerIdx.size(); i++) {
+        if (winnerIdx[i] == idx) {
+            winnerIdx[i] = -1;  // mark as removed
+        } else if (winnerIdx[i] > idx) {
+            winnerIdx[i] = winnerIdx[i] - 1;  // shift index down by 1
+        }
     }
 
+    // Step 3: Remove the team from the teams and wins lists by shifting all elements left
     for (int i = idx; i < (int)teams.size() - 1; i++) {
         teams[i] = teams[i + 1];
-        wins[i]  = wins[i + 1];
+        wins[i] = wins[i + 1];
     }
-    teams.pop_back();
+    teams.pop_back();  // remove last duplicate after shifting
     wins.pop_back();
 
+    // Step 4: Create a new list of match winners without the -1 values (which represent removed matches)
+    vector<int> newWinnerIdx;
+    for (int i = 0; i < (int)winnerIdx.size(); i++) {
+        if (winnerIdx[i] != -1) {
+            newWinnerIdx.push_back(winnerIdx[i]);
+        }
+    }
+    winnerIdx = newWinnerIdx;  // replace old list with the cleaned one
+
+    // Step 5: Rebuild the segment tree because the data changed
     destroy(root);
     root = nullptr;
     if (!winnerIdx.empty()) {
         root = buildRec(0, (int)winnerIdx.size() - 1);
     }
+
     cout << "Removed team: " << name << "\n";
 }
 
