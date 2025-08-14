@@ -63,7 +63,7 @@ To compile the project using C++17 and run the program with your implementations
     g++ -std=c++17 -O2 -o segment_tree main.cpp Segment_Tree.cpp && ./segment_tree
 
 Example of the run and compile code in the terminal:
-![run&compile](run&comiple.png)
+![run&compile](run&compile.png)
 
 # Creating an object from the Segment Tree class
 First, you need to create an object from the SGT class. For this walkthrough, I am calling the object "la_teams". To create this paste the following code into your main.cpp
